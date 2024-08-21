@@ -6,6 +6,7 @@ import com.feanix.system.util.StandardResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
     private final ProductService productService;
 
+
     @PostMapping("/business/create")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<StandardResponseDto> create(
             @RequestBody RequestProductDTO dto
     ) {
@@ -26,6 +29,7 @@ public class ProductController {
     }
 
     @PutMapping("/business/update/{productId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<StandardResponseDto> update(
             @RequestBody RequestProductDTO dto,
             @PathVariable String productId
@@ -38,6 +42,7 @@ public class ProductController {
     }
 
     @PutMapping("/business/update-status/{productId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<StandardResponseDto> updateStatus(
             @PathVariable String productId
     ) {
@@ -49,6 +54,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/business/delete/{productId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<StandardResponseDto> delete(
             @PathVariable String productId
     ) {
@@ -60,6 +66,7 @@ public class ProductController {
     }
 
     @GetMapping("/user/find-by-id/{productId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<StandardResponseDto> findById(
             @PathVariable String productId
     ) {
@@ -71,7 +78,7 @@ public class ProductController {
         );
     }
 
-    @GetMapping("/user/find-all")
+    @GetMapping("/visitor/find-all")
     public ResponseEntity<StandardResponseDto> findById(
             @RequestParam String searchText,
             @RequestParam int page,
